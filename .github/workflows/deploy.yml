@@ -7,17 +7,17 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: fedora-latest
     steps:
       # Check out the repository
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
-      # Set up Node.js environment
+      # Set up Node.js environment with Node 18
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
-          node-version: '16' # Specify the Node.js version you want
+          node-version: '18'
 
       # Install dependencies
       - name: Install dependencies
@@ -31,6 +31,6 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages # The branch to deploy to
-          folder: dist # The folder to deploy, usually 'dist' for Vite apps
-          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+          branch: gh-pages
+          folder: dist
+          token: ${{ secrets.GITHUB_TOKEN }}
