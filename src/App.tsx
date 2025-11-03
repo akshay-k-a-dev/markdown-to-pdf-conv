@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 import { Separator } from '@/components/ui/separator'
 import { Badge } from '@/components/ui/badge'
-import { Download, FileText, Eye, Code } from '@phosphor-icons/react'
+import { Download, FileText, Eye, Code, UploadSimple } from '@phosphor-icons/react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
@@ -68,18 +68,26 @@ function App() {
   const [isExporting, setIsExporting] = useState(false)
   const [showPreview, setShowPreview] = useState(true)
 
+  const MAX_CHAR_LIMIT = 30000
+
   const exportToPDF = async () => {
     setIsExporting(true)
     
     try {
-      // Create a new window with the markdown content
+      const contentToExport = (markdown || '').slice(0, MAX_CHAR_LIMIT)
+      
       const printWindow = window.open('', '_blank')
       if (!printWindow) {
         alert('Please allow popups to export PDF')
         return
       }
 
-      // Generate HTML content with styling
+      const escapedMarkdown = contentToExport
+        .replace(/\\/g, '\\\\')
+        .replace(/`/g, '\\`')
+        .replace(/\$/g, '\\$')
+        .replace(/\n/g, '\\n')
+
       const htmlContent = `
         <!DOCTYPE html>
         <html>
@@ -212,14 +220,17 @@ function App() {
         </head>
         <body>
           <div id="content"></div>
-          <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+          <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><\/script>
           <script>
-            document.getElementById('content').innerHTML = marked.parse(\`${(markdown || '').replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`);
-            window.print();
+            const markdownContent = \`${escapedMarkdown}\`;
+            document.getElementById('content').innerHTML = marked.parse(markdownContent);
+            setTimeout(() => {
+              window.print();
+            }, 500);
             window.onafterprint = function() {
               window.close();
             }
-          </script>
+          <\/script>
         </body>
         </html>
       `
@@ -237,6 +248,32 @@ function App() {
 
   const loadSample = () => {
     setMarkdown(SAMPLE_MARKDOWN)
+  }
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    if (!file.name.endsWith('.md') && !file.name.endsWith('.markdown')) {
+      alert('Please upload a markdown file (.md or .markdown)')
+      return
+    }
+
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const content = e.target?.result as string
+      if (content.length > MAX_CHAR_LIMIT) {
+        alert(`File is too large. Maximum ${MAX_CHAR_LIMIT.toLocaleString()} characters allowed.`)
+        return
+      }
+      setMarkdown(content)
+    }
+    reader.onerror = () => {
+      alert('Failed to read file. Please try again.')
+    }
+    reader.readAsText(file)
+    
+    event.target.value = ''
   }
 
   return (
@@ -270,6 +307,21 @@ function App() {
 
           <Button 
             variant="outline" 
+            onClick={() => document.getElementById('file-upload')?.click()}
+          >
+            <UploadSimple className="w-4 h-4 mr-2" />
+            Upload MD
+          </Button>
+          <input
+            id="file-upload"
+            type="file"
+            accept=".md,.markdown"
+            onChange={handleFileUpload}
+            className="hidden"
+          />
+
+          <Button 
+            variant="outline" 
             onClick={() => setShowPreview(!showPreview)}
             className="lg:hidden"
           >
@@ -278,11 +330,22 @@ function App() {
           </Button>
 
           <div className="flex items-center gap-2 ml-auto">
-            <Badge variant="secondary">
-              {(markdown || '').length} characters
+            <Badge 
+              variant={(markdown || '').length > MAX_CHAR_LIMIT ? 'destructive' : 'secondary'}
+            >
+              {(markdown || '').length.toLocaleString()} / {MAX_CHAR_LIMIT.toLocaleString()}
             </Badge>
           </div>
         </div>
+
+        {(markdown || '').length > MAX_CHAR_LIMIT && (
+          <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg">
+            <p className="text-sm text-destructive font-medium">
+              Warning: Content exceeds {MAX_CHAR_LIMIT.toLocaleString()} character limit. 
+              Only the first {MAX_CHAR_LIMIT.toLocaleString()} characters will be exported to PDF.
+            </p>
+          </div>
+        )}
 
         {/* Main Content */}
         <div className="grid lg:grid-cols-2 gap-6">
