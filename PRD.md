@@ -2,7 +2,7 @@
 
 A clean, professional tool for converting markdown text to properly formatted PDF documents with real-time preview and customizable styling.
 
-**Experience Qualities**:
+
 1. **Efficient** - Quick conversion with instant preview updates as you type
 2. **Professional** - Clean, document-focused interface that feels like a serious publishing tool
 3. **Reliable** - Consistent PDF output that preserves markdown formatting perfectly
@@ -10,9 +10,9 @@ A clean, professional tool for converting markdown text to properly formatted PD
 **Complexity Level**: Light Application (multiple features with basic state)
 - Handles markdown parsing, PDF generation, and preview functionality with persistent user preferences
 
-## Essential Features
+- Trigger: Any change
 
-**Markdown Input Editor**
+**PDF Export**
 - Functionality: Live markdown editor with syntax highlighting and line numbers
 - Purpose: Allows users to write or paste markdown content with visual feedback
 - Trigger: User clicks in the editor area or pastes content
@@ -26,50 +26,50 @@ A clean, professional tool for converting markdown text to properly formatted PD
 - Progression: Edit markdown → Preview updates automatically → Visual feedback matches final PDF
 - Success criteria: Preview matches PDF output, updates within 100ms of typing, handles all common markdown elements
 
-**PDF Export**
+Analogous colo
 - Functionality: Convert markdown to downloadable PDF with proper formatting
-- Purpose: Generate professional documents from markdown source
+- **Accent Color**: Bright Blue (#3b82f6) for active states and
 - Trigger: User clicks "Export PDF" button
 - Progression: Click export → Processing indicator → PDF downloads automatically
 - Success criteria: PDF preserves formatting, fonts, spacing, and all markdown elements correctly
 
 **Sample Content**
-- Functionality: Pre-loaded example markdown content to demonstrate capabilities
-- Purpose: Shows users what's possible and provides starting point
-- Trigger: App loads or user clicks "Load Sample"
-- Progression: Load app → Sample content appears → User can edit or replace
-- Success criteria: Comprehensive example showing headers, lists, code blocks, tables, etc.
+  - H1 (App Title): Inter Bold/24px/tight letter spacing
+  - Body Text: Inter Regular/14px/relaxed line height
+  - Button Text: Inter Medium/14px/normal spacing
+## Animations
+Subtle, functional animations that enhance usability without distraction - smooth transitio
 
-## Edge Case Handling
 
-- **Large Documents**: Progress indicator for documents over 50KB, chunked processing
-- **Invalid Markdown**: Graceful handling of malformed syntax without breaking preview
-- **Empty Input**: Show helpful placeholder text and sample content option
-- **Export Errors**: Clear error messages with retry option if PDF generation fails
-- **Browser Compatibility**: Fallback messaging for unsupported browsers
 
-## Design Direction
+  - Card for main layout sections (editor, preview)
+  - Textarea for markdown input with monospace styling
+  - Badge for status indicators
+  
+  - Custom markdown editor with syntax highlighting using a lightweight 
 
-The design should feel professional and document-focused, like a modern publishing tool that developers and writers would trust for important documents - clean, minimal interface that keeps content front and center.
+- **States**: 
 
-## Color Selection
+- **Icon Selection**: 
 
-Analogous color scheme using cool blues and grays to create a professional, document-focused environment that feels calm and trustworthy.
+  - Code for markd
 
-- **Primary Color**: Deep Blue (#1e40af) - Communicates professionalism and trust for the main export action
-- **Secondary Colors**: Light Gray (#f8fafc) for editor background, Medium Gray (#64748b) for UI elements
-- **Accent Color**: Bright Blue (#3b82f6) for active states and highlighting important actions
-- **Foreground/Background Pairings**: 
-  - Background (Light Gray #f8fafc): Dark Gray text (#1e293b) - Ratio 12.6:1 ✓
-  - Card (White #ffffff): Dark Gray text (#1e293b) - Ratio 15.8:1 ✓
-  - Primary (Deep Blue #1e40af): White text (#ffffff) - Ratio 8.9:1 ✓
-  - Accent (Bright Blue #3b82f6): White text (#ffffff) - Ratio 5.1:1 ✓
+- **Mobile**: Stack editor above preview vertically, full-width cards, larger touch targets for buttons, collapsible preview section
 
-## Font Selection
 
-Use Inter for clean, highly legible interface text and JetBrains Mono for code elements to create a modern, developer-friendly aesthetic that's professional yet approachable.
 
-- **Typographic Hierarchy**:
+
+
+
+
+
+
+
+
+
+
+
+
   - H1 (App Title): Inter Bold/24px/tight letter spacing
   - H2 (Section Headers): Inter SemiBold/18px/normal spacing
   - Body Text: Inter Regular/14px/relaxed line height
